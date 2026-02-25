@@ -79,6 +79,9 @@ const BookPage = () => {
               : "—"}
           </p>
           <p>Borrower: {availability?.borrower || "—"}</p>
+          <button type="button" onClick={() => navigate(`/edit-book/${book.id}`)}>
+            Edit
+          </button>
           <button
             type="button"
             onClick={() => onDeleteClick(book.id)}
