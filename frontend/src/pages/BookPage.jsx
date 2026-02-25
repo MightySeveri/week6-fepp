@@ -7,6 +7,7 @@ const BookPage = () => {
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -25,6 +26,32 @@ const BookPage = () => {
 
     fetchBook();
   }, [id]);
+
+  const deleteBook = async (bookId) => {
+    const res = await fetch(`/api/books/${bookId}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to delete book");
+    }
+  };
+
+  const onDeleteClick = async (bookId) => {
+    const confirmed = window.confirm("Are you sure you want to delete this book?");
+    if (!confirmed) return;
+
+    try {
+      setIsDeleting(true);
+      await deleteBook(bookId);
+      navigate("/");
+    } catch (err) {
+      console.error("Error deleting book:", err);
+      setError(err.message);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const availability = book?.availability;
 
@@ -52,6 +79,13 @@ const BookPage = () => {
               : "—"}
           </p>
           <p>Borrower: {availability?.borrower || "—"}</p>
+          <button
+            type="button"
+            onClick={() => onDeleteClick(book.id)}
+            disabled={isDeleting}
+          >
+            {isDeleting ? "Deleting..." : "Delete"}
+          </button>
         </div>
       )}
     </div>
