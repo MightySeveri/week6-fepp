@@ -1,6 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const BookListing = ({ title, author, isbn, publisher, genre, availability }) => {
+const BookListing = ({ id, title, author, isbn, publisher, genre, availability }) => {
   const isAvailable = availability?.isAvailable ?? false;
 
   return (
@@ -21,6 +22,7 @@ const BookListing = ({ title, author, isbn, publisher, genre, availability }) =>
       <p>
         <strong>Available:</strong> {isAvailable ? "Yes" : "No"}
       </p>
+      <Link to={`/books/${id}`}>View details</Link>
     </article>
   );
 };
