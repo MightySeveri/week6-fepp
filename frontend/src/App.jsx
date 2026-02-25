@@ -5,6 +5,8 @@ import BookPage from "./pages/BookPage";
 import EditBookPage from "./pages/EditBookPage";
 import Navbar from "./components/Navbar";
 import NotFoundPage from "./pages/NotFoundPage";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/add-book" element={<AddBookPage />} />
             <Route path="/books/:id" element={<BookPage />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/edit-book/:id" element={<EditBookPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
