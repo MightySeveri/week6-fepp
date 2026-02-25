@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
     setError(null);
     setIsSubmitting(true);
-
+    
     try {
       const response = await fetch("/api/users/login", {
         method: "POST",
@@ -27,6 +27,7 @@ const Login = () => {
       }
 
       localStorage.setItem("user", JSON.stringify(user));
+      setIsAuthenticated?.(true);
       navigate("/");
     } catch (err) {
       setError(err.message || "Login failed");

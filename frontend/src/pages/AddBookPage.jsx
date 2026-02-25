@@ -15,6 +15,7 @@ const AddBookPage = () => {
 
   const submitForm = async (e) => {
     e.preventDefault();
+    const user = JSON.parse(localStorage.getItem("user") || "null");
 
     const available = isAvailable === "true";
     const payload = {
@@ -34,6 +35,7 @@ const AddBookPage = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${user?.token || ""}`,
       },
       body: JSON.stringify(payload),
     });
@@ -113,7 +115,7 @@ const AddBookPage = () => {
           onChange={(e) => setBorrower(e.target.value)}
         />
 
-        <button>Add Book</button>
+        <button type="submit">Add Book</button>
       </form>
     </div>
   );

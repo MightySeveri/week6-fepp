@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const BookPage = () => {
+const BookPage = ({ isAuthenticated }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [book, setBook] = useState(null);
@@ -28,8 +28,12 @@ const BookPage = () => {
   }, [id]);
 
   const deleteBook = async (bookId) => {
+    const user = JSON.parse(localStorage.getItem("user") || "null");
     const res = await fetch(`/api/books/${bookId}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user?.token || ""}`,
+      },
     });
 
     if (!res.ok) {
@@ -79,16 +83,23 @@ const BookPage = () => {
               : "—"}
           </p>
           <p>Borrower: {availability?.borrower || "—"}</p>
-          <button type="button" onClick={() => navigate(`/edit-book/${book.id}`)}>
-            Edit
-          </button>
-          <button
-            type="button"
-            onClick={() => onDeleteClick(book.id)}
-            disabled={isDeleting}
-          >
-            {isDeleting ? "Deleting..." : "Delete"}
-          </button>
+          {isAuthenticated && (
+            <>
+              <button
+                type="button"
+                onClick={() => navigate(`/edit-book/${book.id}`)}
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                onClick={() => onDeleteClick(book.id)}
+                disabled={isDeleting}
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </button>
+            </>
+          )}
         </div>
       )}
     </div>

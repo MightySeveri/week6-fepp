@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Signup = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -12,7 +12,6 @@ const Signup = () => {
   const [membershipStatus, setMembershipStatus] = useState("");
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -40,6 +39,7 @@ const Signup = () => {
       }
 
       localStorage.setItem("user", JSON.stringify(user));
+      setIsAuthenticated?.(true);
       navigate("/");
     } catch (err) {
       setError(err.message || "Signup failed");

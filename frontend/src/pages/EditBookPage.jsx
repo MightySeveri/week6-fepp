@@ -50,6 +50,7 @@ const EditBookPage = () => {
     e.preventDefault();
     setError(null);
     setIsSubmitting(true);
+    const user = JSON.parse(localStorage.getItem("user") || "null");
 
     const available = isAvailable === "true";
     const payload = {
@@ -70,6 +71,7 @@ const EditBookPage = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.token || ""}`,
         },
         body: JSON.stringify(payload),
       });
